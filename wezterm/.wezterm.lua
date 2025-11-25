@@ -12,7 +12,6 @@ end
 
 config.font = wezterm.font 'DejaVu Sans Mono for Powerline'
 config.font_size = 18.0
-config.window_close_confirmation = 'NeverPrompt'
 config.color_scheme = 'Dracula'
 config.window_decorations = "RESIZE"
 
