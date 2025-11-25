@@ -132,5 +132,23 @@ config.colors = {
   },
 }
 
+-- Mouse bindings for clickable links
+-- Note: Shift bypasses tmux mouse capture, so Shift+click works inside tmux
+config.mouse_bindings = {
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'SHIFT',
+    action = act.OpenLinkAtMouseCursor,
+  },
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'CMD',
+    action = act.OpenLinkAtMouseCursor,
+  },
+}
+
+-- Explicit hyperlink rules
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+
 -- and finally, return the configuration to wezterm
 return config
