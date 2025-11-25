@@ -1,0 +1,126 @@
+-- Pull in the wezterm API
+local wezterm = require 'wezterm'
+
+-- This table will hold the configuration.
+local config = {}
+
+-- In newer versions of wezterm, use the config_builder which will
+-- help provide clearer error messages
+if wezterm.config_builder then
+  config = wezterm.config_builder()
+end
+
+config.font = wezterm.font 'DejaVu Sans Mono for Powerline'
+config.font_size = 16.0
+config.window_close_confirmation = 'NeverPrompt'
+config.color_scheme = 'Dracula'
+config.window_decorations = "RESIZE"
+
+local act = wezterm.action
+config.keys = {
+  {
+    key = 'Enter',
+    mods = 'SHIFT',
+    action = act.Multiple {
+      act.SendKey { key = 'RightArrow' },
+      act.SendKey { key = 'Enter' },
+    },
+  },
+  {
+    key = 'a',
+    mods = 'CTRL',
+    action = act.SendKey { key = 'Home' },
+  },
+  {
+    key = 'e',
+    mods = 'CTRL',
+    action = act.SendKey { key = 'End' },
+  },
+  {
+    key = 'k',
+    mods = 'CMD',
+    action = wezterm.action.SendString 'clear\n',
+  },
+}
+
+-- tab bar
+config.hide_tab_bar_if_only_one_tab = false
+config.tab_bar_at_bottom = true
+config.use_fancy_tab_bar = false
+config.tab_and_split_indices_are_zero_based = false
+
+-- Custom tab names based on index
+local tab_names = {
+  [1] = "local",
+  [2] = "agent",
+  [3] = "k8s",
+  [4] = "devbox",
+  [5] = "shard",
+  -- Add more custom names as needed
+}
+
+wezterm.on("format-tab-title", function(tab, tabs, panes, config)
+  local tab_number = tab.tab_index + 1
+  local custom_name = tab_names[tab_number] or "Tab"
+  
+  -- Colors from Dracula theme
+  local bar_bg = '#191a21'  -- Tab bar background
+  local bg_color = bar_bg  -- Inactive tabs match bar background
+  local fg_color = '#f8f8f2'
+  
+  if tab.is_active then
+    bg_color = '#bd93f9'  -- Dracula purple
+    fg_color = '#282a36'  -- Dark text for contrast
+  end
+  
+  -- Powerline right-pointing triangle separator
+  local right_sep = ''
+  
+  -- Format with powerline separator at the end
+  return {
+    { Background = { Color = bg_color } },
+    { Foreground = { Color = fg_color } },
+    { Text = string.format(' %s  %s ', tab_number, custom_name) },
+    { Background = { Color = bar_bg } },
+    { Foreground = { Color = bg_color } },
+    { Text = right_sep },
+  }
+end)
+
+config.window_frame = {
+  font = wezterm.font 'DejaVu Sans Mono for Powerline',
+  font_size = 16.0,
+  active_titlebar_bg = '#212121',
+  inactive_titlebar_bg = '#212121',
+}
+
+config.colors = {
+  tab_bar = {
+    background = '#191a21',  -- Darker background for tab bar
+    active_tab = {
+      fg_color = '#282a36',  -- Dark text
+      bg_color = '#bd93f9',  -- Dracula purple
+      intensity = 'Bold',
+    },
+    inactive_tab = {
+      fg_color = '#f8f8f2',  -- Light gray
+      bg_color = '#191a21',  -- Match tab bar background
+    },
+    inactive_tab_hover = {
+      fg_color = '#f8f8f2',
+      bg_color = '#6272a4',  -- Dracula comment gray (lighter)
+      italic = false,
+    },
+    new_tab = {
+      fg_color = '#f8f8f2',
+      bg_color = '#282a36',  -- Dracula background
+    },
+    new_tab_hover = {
+      fg_color = '#f8f8f2',
+      bg_color = '#6272a4',
+    },
+  },
+}
+
+-- and finally, return the configuration to wezterm
+return config
