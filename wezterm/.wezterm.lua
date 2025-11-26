@@ -40,16 +40,26 @@ config.keys = {
     mods = 'CMD',
     action = wezterm.action.SendString 'clear\n',
   },
-  -- CMD+number to switch tmux windows (sends prefix C-Space then number)
-  { key = '1', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '1' } } },
-  { key = '2', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '2' } } },
-  { key = '3', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '3' } } },
-  { key = '4', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '4' } } },
-  { key = '5', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '5' } } },
-  { key = '6', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '6' } } },
-  { key = '7', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '7' } } },
-  { key = '8', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '8' } } },
-  { key = '9', mods = 'CMD', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '9' } } },
+  -- CMD+number to switch wezterm tabs
+  { key = '1', mods = 'CMD', action = act.ActivateTab(0) },
+  { key = '2', mods = 'CMD', action = act.ActivateTab(1) },
+  { key = '3', mods = 'CMD', action = act.ActivateTab(2) },
+  { key = '4', mods = 'CMD', action = act.ActivateTab(3) },
+  { key = '5', mods = 'CMD', action = act.ActivateTab(4) },
+  { key = '6', mods = 'CMD', action = act.ActivateTab(5) },
+  { key = '7', mods = 'CMD', action = act.ActivateTab(6) },
+  { key = '8', mods = 'CMD', action = act.ActivateTab(7) },
+  { key = '9', mods = 'CMD', action = act.ActivateTab(8) },
+  -- OPT+number to switch tmux windows (sends prefix C-Space then number)
+  { key = '1', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '1' } } },
+  { key = '2', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '2' } } },
+  { key = '3', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '3' } } },
+  { key = '4', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '4' } } },
+  { key = '5', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '5' } } },
+  { key = '6', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '6' } } },
+  { key = '7', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '7' } } },
+  { key = '8', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '8' } } },
+  { key = '9', mods = 'OPT', action = act.Multiple { act.SendKey { key = ' ', mods = 'CTRL' }, act.SendKey { key = '9' } } },
 }
 
 -- tab bar
