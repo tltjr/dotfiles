@@ -219,3 +219,14 @@ vim.keymap.set("n", "<leader>o", function() harpoon:list():prev() end)
 vim.keymap.set("n", "<leader>i", function() harpoon:list():next() end)
 vim.keymap.set("n", "<leader>c", function() harpoon:list():clear() end)
 
+-- Auto-save session on exit for tmux-resurrect integration
+-- This works with @resurrect-strategy-nvim 'session'
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    -- Only save session if we're in a directory (not editing a single file)
+    if vim.fn.argc() == 0 or vim.fn.isdirectory(vim.fn.argv()[1]) == 1 then
+      vim.cmd("mksession! Session.vim")
+    end
+  end,
+})
+

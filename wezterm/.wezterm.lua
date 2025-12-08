@@ -10,6 +10,46 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+-- Startup configuration: spawn 6 tabs with appropriate commands
+wezterm.on('gui-startup', function(cmd)
+  local mux = wezterm.mux
+  local home = os.getenv("HOME")
+  local tmux = "/opt/homebrew/bin/tmux"
+
+  -- Tab 1: rails - local tmux session
+  local tab, pane, window = mux.spawn_window({
+    args = { tmux, "new-session", "-A", "-s", "rails" },
+    cwd = home .. "/src/bonfire-pit",
+  })
+
+  -- Tab 2: local - local tmux session (nvim with scratch files)
+  window:spawn_tab({
+    args = { tmux, "new-session", "-A", "-s", "local" },
+    cwd = home,
+  })
+
+  -- Tab 3: agent - local tmux session
+  window:spawn_tab({
+    args = { tmux, "new-session", "-A", "-s", "agent" },
+    cwd = home .. "/src/bonfire-pit",
+  })
+
+  -- Tab 4: k8s - SSH via alias, then attach to remote tmux
+  window:spawn_tab({
+    args = { "/opt/homebrew/bin/fish", "-c", "k8s-tmux" },
+  })
+
+  -- Tab 5: devbox - SSH via alias, then attach to remote tmux
+  window:spawn_tab({
+    args = { "/opt/homebrew/bin/fish", "-c", "devbox-tmux" },
+  })
+
+  -- Tab 6: shard - local shell at home directory
+  window:spawn_tab({
+    cwd = home,
+  })
+end)
+
 config.font = wezterm.font 'DejaVu Sans Mono for Powerline'
 config.font_size = 18.0
 config.color_scheme = 'Dracula'
@@ -70,12 +110,12 @@ config.tab_and_split_indices_are_zero_based = false
 
 -- Custom tab names based on index
 local tab_names = {
-  [1] = "local",
-  [2] = "agent",
-  [3] = "k8s",
-  [4] = "devbox",
-  [5] = "shard",
-  -- Add more custom names as needed
+  [1] = "rails",
+  [2] = "local",
+  [3] = "agent",
+  [4] = "k8s",
+  [5] = "devbox",
+  [6] = "shard",
 }
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config)
