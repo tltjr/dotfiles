@@ -16,6 +16,11 @@ set RIPGREP_CONFIG_PATH /Users/Tom.Thornton/.ripgreprc
 
 set CSSM_API_URL "https://commerce-test.cisco.com/api/v2/ts3/ccs/software/licensing/v1/"
 
+# Load secrets from local file (not tracked in git)
+if test -f ~/.config/fish/secrets.fish
+    source ~/.config/fish/secrets.fish
+end
+
 # set -gx LDFLAGS "-L/opt/homebrew/opt/libffi/lib"
 # set -gx CPPFLAGS "-I/opt/homebrew/opt/libffi/include"
 # set -gx PKG_CONFIG_PATH "/opt/homebrew/opt/libffi/lib/pkgconfig"

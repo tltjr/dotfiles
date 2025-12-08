@@ -165,7 +165,7 @@ vim.keymap.set('n', '<leader>r', builtin.registers, {})
 vim.keymap.set('n', '<leader>gr', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>b', builtin.buffers, {})
 
-vim.keymap.set('n', '<leader>gb', '<Cmd>BlameToggle virtual<CR>', {})
+vim.keymap.set('n', '<leader>gb', '<Cmd>BlameToggle window<CR>', {})
 
 require('feline-configured')
 
