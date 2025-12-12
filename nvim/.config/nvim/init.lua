@@ -46,7 +46,18 @@ require("lazy").setup({
   "tpope/vim-obsession",
   "tpope/vim-rails",
   "feline-nvim/feline.nvim",
-  "sindrets/diffview.nvim",
+  {
+    "sindrets/diffview.nvim",
+    config = function()
+      require("diffview").setup({
+        hooks = {
+          diff_buf_read = function()
+            vim.opt_local.foldenable = false
+          end,
+        },
+      })
+    end,
+  },
   "github/copilot.vim",
   -- {
   --   "yetone/avante.nvim",

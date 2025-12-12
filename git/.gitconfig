@@ -17,3 +17,5 @@
 [difftool]
 	prompt = false
 
+[core]
+	excludesfile = /Users/Tom.Thornton/.gitignore_global
