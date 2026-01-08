@@ -28,25 +28,32 @@ wezterm.on('gui-startup', function(cmd)
     cwd = home,
   })
 
-  -- Tab 3: agent - local tmux session
-  window:spawn_tab({
-    args = { tmux, "new-session", "-A", "-s", "agent" },
-    cwd = home .. "/src/bonfire-pit",
-  })
-
-  -- Tab 4: k8s - SSH via alias, then attach to remote tmux
+  -- Tab 3: k8s - SSH via alias, then attach to remote tmux
   window:spawn_tab({
     args = { "/opt/homebrew/bin/fish", "-c", "k8s-tmux" },
   })
 
-  -- Tab 5: devbox - SSH via alias, then attach to remote tmux
+  -- Tab 4: pit - local tmux session
   window:spawn_tab({
-    args = { "/opt/homebrew/bin/fish", "-c", "devbox-tmux" },
+    args = { tmux, "new-session", "-A", "-s", "pit" },
+    cwd = home .. "/src/bonfire-pit",
   })
 
-  -- Tab 6: shard - local shell at home directory
+  -- Tab 5: wood - local tmux session
   window:spawn_tab({
-    cwd = home,
+    args = { tmux, "new-session", "-A", "-s", "wood" },
+    cwd = home .. "/src/firewood-rack",
+  })
+
+  -- Tab 6: kindle - local tmux session
+  window:spawn_tab({
+    args = { tmux, "new-session", "-A", "-s", "kindle" },
+    cwd = home .. "/src/bonfire-kindle",
+  })
+
+  -- Tab 7: devbox - SSH via alias, then attach to remote tmux
+  window:spawn_tab({
+    args = { "/opt/homebrew/bin/fish", "-c", "devbox-tmux" },
   })
 end)
 
@@ -112,10 +119,11 @@ config.tab_and_split_indices_are_zero_based = false
 local tab_names = {
   [1] = "rails",
   [2] = "local",
-  [3] = "agent",
-  [4] = "k8s",
-  [5] = "devbox",
-  [6] = "shard",
+  [3] = "k8s",
+  [4] = "pit",
+  [5] = "wood",
+  [6] = "kindle",
+  [7] = "devbox",
 }
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config)
