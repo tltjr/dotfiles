@@ -34,9 +34,9 @@ wezterm.on('gui-startup', function(cmd)
   })
   tab:set_title("local")
 
-  -- Tab 3: k8s - SSH via alias, then attach to remote tmux
+  -- Tab 3: k8s - SSH through jump host to k8s bastion, attach to tmux
   tab = window:spawn_tab({
-    args = { "/opt/homebrew/bin/fish", "-c", "k8s-tmux" },
+    args = { "/opt/homebrew/bin/fish", "-l", "-c", "k8s-tmux" },
   })
   tab:set_title("k8s")
 
@@ -63,7 +63,7 @@ wezterm.on('gui-startup', function(cmd)
 
   -- Tab 7: devbox - SSH via alias, then attach to remote tmux
   tab = window:spawn_tab({
-    args = { "/opt/homebrew/bin/fish", "-c", "devbox-tmux" },
+    args = { "/opt/homebrew/bin/fish", "-l", "-c", "devbox-tmux" },
   })
   tab:set_title("devbox")
 end)

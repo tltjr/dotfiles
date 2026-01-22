@@ -42,7 +42,8 @@ alias devbox="ssh -A thornton@dev274.meraki.com"
 
 # Tmux-attached versions (used by WezTerm startup)
 # Attaches to most recent session if one exists, otherwise creates new
-alias k8s-tmux="ssh -A jump -t ssh -t usw1464 'tmux attach || tmux new-session'"
+# Note: Inner quotes ensure || is interpreted on final host, not jump
+alias k8s-tmux="ssh -A jump -t \"ssh -t usw1464 'tmux attach || tmux new-session'\""
 alias devbox-tmux="ssh -A -t thornton@dev274.meraki.com 'tmux attach || tmux new-session'"
 
 # Initialize rbenv
