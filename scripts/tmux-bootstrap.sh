@@ -1,6 +1,6 @@
 #!/bin/bash
 # Bootstrap script for tmux sessions
-# Run this once to set up your sessions, then tmux-continuum will maintain them
+# Called automatically by WezTerm on startup to create fresh sessions
 
 PIT_DIR="$HOME/src/bonfire-pit"
 WOOD_DIR="$HOME/src/firewood-rack"
@@ -81,9 +81,5 @@ create_three_window_session "wood" "$WOOD_DIR"
 # =============================================================================
 create_three_window_session "kindle" "$KINDLE_DIR"
 
-echo "✅ Tmux sessions bootstrapped!"
-echo ""
-echo "Sessions created:"
-tmux list-sessions
-echo ""
-echo "Now open WezTerm and it will attach to these sessions."
+# Reload config to ensure TPM plugins (powerkit) initialize properly
+tmux source-file ~/.tmux.conf 2>/dev/null || true

@@ -10,51 +10,62 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
--- Startup configuration: spawn 6 tabs with appropriate commands
+-- Startup configuration: spawn tabs with explicit titles
 wezterm.on('gui-startup', function(cmd)
   local mux = wezterm.mux
   local home = os.getenv("HOME")
   local tmux = "/opt/homebrew/bin/tmux"
+  
+  -- Run bootstrap script first to create tmux sessions with proper windows
+  -- This ensures sessions exist before we try to attach
+  os.execute(home .. "/dotfiles/scripts/tmux-bootstrap.sh")
 
   -- Tab 1: rails - local tmux session
   local tab, pane, window = mux.spawn_window({
-    args = { tmux, "new-session", "-A", "-s", "rails" },
+    args = { tmux, "attach-session", "-t", "rails" },
     cwd = home .. "/src/bonfire-pit",
   })
+  tab:set_title("rails")
 
   -- Tab 2: local - local tmux session (nvim with scratch files)
-  window:spawn_tab({
-    args = { tmux, "new-session", "-A", "-s", "local" },
+  tab = window:spawn_tab({
+    args = { tmux, "attach-session", "-t", "local" },
     cwd = home,
   })
+  tab:set_title("local")
 
   -- Tab 3: k8s - SSH via alias, then attach to remote tmux
-  window:spawn_tab({
+  tab = window:spawn_tab({
     args = { "/opt/homebrew/bin/fish", "-c", "k8s-tmux" },
   })
+  tab:set_title("k8s")
 
   -- Tab 4: pit - local tmux session
-  window:spawn_tab({
-    args = { tmux, "new-session", "-A", "-s", "pit" },
+  tab = window:spawn_tab({
+    args = { tmux, "attach-session", "-t", "pit" },
     cwd = home .. "/src/bonfire-pit",
   })
+  tab:set_title("pit")
 
   -- Tab 5: wood - local tmux session
-  window:spawn_tab({
-    args = { tmux, "new-session", "-A", "-s", "wood" },
+  tab = window:spawn_tab({
+    args = { tmux, "attach-session", "-t", "wood" },
     cwd = home .. "/src/firewood-rack",
   })
+  tab:set_title("wood")
 
   -- Tab 6: kindle - local tmux session
-  window:spawn_tab({
-    args = { tmux, "new-session", "-A", "-s", "kindle" },
+  tab = window:spawn_tab({
+    args = { tmux, "attach-session", "-t", "kindle" },
     cwd = home .. "/src/bonfire-kindle",
   })
+  tab:set_title("kindle")
 
   -- Tab 7: devbox - SSH via alias, then attach to remote tmux
-  window:spawn_tab({
+  tab = window:spawn_tab({
     args = { "/opt/homebrew/bin/fish", "-c", "devbox-tmux" },
   })
+  tab:set_title("devbox")
 end)
 
 config.font = wezterm.font 'DejaVu Sans Mono for Powerline'
@@ -115,8 +126,8 @@ config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
 config.tab_and_split_indices_are_zero_based = false
 
--- Custom tab names based on index
-local tab_names = {
+-- Fallback tab names (used if explicit title not set)
+local fallback_tab_names = {
   [1] = "rails",
   [2] = "local",
   [3] = "k8s",
@@ -128,7 +139,12 @@ local tab_names = {
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config)
   local tab_number = tab.tab_index + 1
-  local custom_name = tab_names[tab_number] or "Tab"
+  
+  -- Use explicit tab title if set, otherwise fall back to index-based naming
+  local custom_name = tab.tab_title
+  if not custom_name or custom_name == "" then
+    custom_name = fallback_tab_names[tab_number] or "Tab"
+  end
   
   -- Colors from Dracula theme
   local bar_bg = '#191a21'  -- Tab bar background
