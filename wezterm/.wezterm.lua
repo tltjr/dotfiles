@@ -27,7 +27,7 @@ wezterm.on('gui-startup', function(cmd)
   })
   tab:set_title("rails")
 
-  -- Tab 2: local - local tmux session (nvim with scratch files)
+  -- Tab 2: local - local tmux session (scratch + project nvim windows)
   tab = window:spawn_tab({
     args = { tmux, "attach-session", "-t", "local" },
     cwd = home,
@@ -40,28 +40,7 @@ wezterm.on('gui-startup', function(cmd)
   })
   tab:set_title("k8s")
 
-  -- Tab 4: pit - local tmux session
-  tab = window:spawn_tab({
-    args = { tmux, "attach-session", "-t", "pit" },
-    cwd = home .. "/src/bonfire-pit",
-  })
-  tab:set_title("pit")
-
-  -- Tab 5: wood - local tmux session
-  tab = window:spawn_tab({
-    args = { tmux, "attach-session", "-t", "wood" },
-    cwd = home .. "/src/firewood-rack",
-  })
-  tab:set_title("wood")
-
-  -- Tab 6: kindle - local tmux session
-  tab = window:spawn_tab({
-    args = { tmux, "attach-session", "-t", "kindle" },
-    cwd = home .. "/src/bonfire-kindle",
-  })
-  tab:set_title("kindle")
-
-  -- Tab 7: devbox - SSH via alias, then attach to remote tmux
+  -- Tab 4: devbox - SSH via alias, then attach to remote tmux
   tab = window:spawn_tab({
     args = { "/opt/homebrew/bin/fish", "-l", "-c", "devbox-tmux" },
   })
@@ -131,10 +110,7 @@ local fallback_tab_names = {
   [1] = "rails",
   [2] = "local",
   [3] = "k8s",
-  [4] = "pit",
-  [5] = "wood",
-  [6] = "kindle",
-  [7] = "devbox",
+  [4] = "devbox",
 }
 
 wezterm.on("format-tab-title", function(tab, tabs, panes, config)

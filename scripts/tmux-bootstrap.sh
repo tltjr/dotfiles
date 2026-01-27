@@ -2,34 +2,21 @@
 # Bootstrap script for tmux sessions
 # Called automatically by WezTerm on startup to create fresh sessions
 
+# Use full path to tmux since wezterm's os.execute may not have /opt/homebrew/bin in PATH
+TMUX="/opt/homebrew/bin/tmux"
+
 PIT_DIR="$HOME/src/bonfire-pit"
 WOOD_DIR="$HOME/src/firewood-rack"
 KINDLE_DIR="$HOME/src/bonfire-kindle"
+FEDERAL_DIR="$HOME/src/bonfire-pit-federal"
 TEMP_DIR="$HOME/temp"
 
 ensure_fresh_session() {
   local session_name=$1
 
-  if tmux has-session -t "$session_name" 2>/dev/null; then
-    tmux kill-session -t "$session_name"
+  if $TMUX has-session -t "$session_name" 2>/dev/null; then
+    $TMUX kill-session -t "$session_name"
   fi
-}
-
-create_three_window_session() {
-  local session_name=$1
-  local session_dir=$2
-
-  ensure_fresh_session "$session_name"
-
-  tmux new-session -d -s "$session_name" -c "$session_dir" -n "terminal"
-
-  tmux new-window -t "$session_name" -c "$session_dir" -n "cursor"
-  tmux send-keys -t "$session_name":2 "cursor-agent" Enter
-
-  tmux new-window -t "$session_name" -c "$session_dir" -n "nvim"
-  tmux send-keys -t "$session_name":3 "nvim" Enter
-
-  tmux select-window -t "$session_name":1
 }
 
 # Ensure temp directory and scratch files exist
@@ -42,44 +29,49 @@ touch "$TEMP_DIR/scratch.rb" "$TEMP_DIR/scratch.sql"
 # =============================================================================
 ensure_fresh_session "rails"
 
-tmux new-session -d -s rails -c "$PIT_DIR" -n "pgcli"
-tmux send-keys -t rails:1 "pgcli -d bonfire_pit_dev" Enter
+$TMUX new-session -d -s rails -c "$PIT_DIR" -n "pgcli"
+$TMUX send-keys -t rails:1 "pgcli -d bonfire_pit_dev" Enter
 
-tmux new-window -t rails -c "$PIT_DIR" -n "console"
-tmux send-keys -t rails:2 "rails console" Enter
+$TMUX new-window -t rails -c "$PIT_DIR" -n "console"
+$TMUX send-keys -t rails:2 "rails console" Enter
 
-tmux new-window -t rails -c "$PIT_DIR" -n "server"
-tmux send-keys -t rails:3 "rails server" Enter
+$TMUX new-window -t rails -c "$PIT_DIR" -n "server"
+$TMUX send-keys -t rails:3 "rails server" Enter
 
 # Select first window
-tmux select-window -t rails:1
+$TMUX select-window -t rails:1
 
 # =============================================================================
 # Session 2: local
-# 1 window: nvim with scratch.rb and scratch.sql buffers
+# 6 windows: terminal, scratch files, then nvim for each project
 # =============================================================================
 ensure_fresh_session "local"
 
-tmux new-session -d -s local -c "$TEMP_DIR" -n "scratch"
-tmux send-keys -t local:1 "nvim scratch.sql scratch.rb" Enter
+# Window 1: terminal at home
+$TMUX new-session -d -s local -c "$HOME" -n "terminal"
 
-# =============================================================================
-# Session 3: pit
-# 3 windows: terminal, cursor-agent, nvim
-# =============================================================================
-create_three_window_session "pit" "$PIT_DIR"
+# Window 2: scratch files
+$TMUX new-window -t local -c "$TEMP_DIR" -n "scratch"
+$TMUX send-keys -t local:2 "nvim scratch.sql scratch.rb" Enter
 
-# =============================================================================
-# Session 4: wood
-# 3 windows: terminal, cursor-agent, nvim
-# =============================================================================
-create_three_window_session "wood" "$WOOD_DIR"
+# Window 3: bonfire-pit
+$TMUX new-window -t local -c "$PIT_DIR" -n "pit"
+$TMUX send-keys -t local:3 "nvim" Enter
 
-# =============================================================================
-# Session 5: kindle
-# 3 windows: terminal, cursor-agent, nvim
-# =============================================================================
-create_three_window_session "kindle" "$KINDLE_DIR"
+# Window 4: firewood-rack
+$TMUX new-window -t local -c "$WOOD_DIR" -n "wood"
+$TMUX send-keys -t local:4 "nvim" Enter
+
+# Window 5: bonfire-kindle
+$TMUX new-window -t local -c "$KINDLE_DIR" -n "kindle"
+$TMUX send-keys -t local:5 "nvim" Enter
+
+# Window 6: bonfire-pit-federal
+$TMUX new-window -t local -c "$FEDERAL_DIR" -n "federal"
+$TMUX send-keys -t local:6 "nvim" Enter
+
+# Select first window
+$TMUX select-window -t local:1
 
 # Reload config to ensure TPM plugins (powerkit) initialize properly
-tmux source-file ~/.tmux.conf 2>/dev/null || true
+$TMUX source-file ~/.tmux.conf 2>/dev/null || true
