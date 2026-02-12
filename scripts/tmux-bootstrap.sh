@@ -11,6 +11,15 @@ KINDLE_DIR="$HOME/src/bonfire-kindle"
 FEDERAL_DIR="$HOME/src/bonfire-pit-federal"
 TEMP_DIR="$HOME/temp"
 
+# Clean up orphaned nvim processes from previous sessions
+# These accumulate when tmux sessions are killed but nvim doesn't terminate
+cleanup_orphaned_nvim() {
+  # Kill nvim processes that are not attached to a terminal (orphaned)
+  pkill -9 -f "nvim --embed" 2>/dev/null || true
+  # Kill orphaned copilot language servers
+  pkill -9 -f "copilot-language-server" 2>/dev/null || true
+}
+
 ensure_fresh_session() {
   local session_name=$1
 
@@ -18,6 +27,9 @@ ensure_fresh_session() {
     $TMUX kill-session -t "$session_name"
   fi
 }
+
+# Clean up orphans before creating new sessions
+cleanup_orphaned_nvim
 
 # Ensure temp directory and scratch files exist
 mkdir -p "$TEMP_DIR"
