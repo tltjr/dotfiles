@@ -34,15 +34,16 @@ wezterm.on('gui-startup', function(cmd)
   })
   tab:set_title("local")
 
-  -- Tab 3: k8s - SSH through jump host to k8s bastion, attach to tmux
+  -- Tab 3: k8s - just open fish shell, user can run k8s-tmux manually
+  -- (Auto-connecting SSH on startup caused crashes when connections failed)
   tab = window:spawn_tab({
-    args = { "/opt/homebrew/bin/fish", "-l", "-c", "k8s-tmux" },
+    args = { "/opt/homebrew/bin/fish", "-l" },
   })
   tab:set_title("k8s")
 
-  -- Tab 4: devbox - SSH via alias, then attach to remote tmux
+  -- Tab 4: devbox - just open fish shell, user can run devbox-tmux manually
   tab = window:spawn_tab({
-    args = { "/opt/homebrew/bin/fish", "-l", "-c", "devbox-tmux" },
+    args = { "/opt/homebrew/bin/fish", "-l" },
   })
   tab:set_title("devbox")
 end)

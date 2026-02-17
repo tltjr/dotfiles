@@ -14,10 +14,12 @@ TEMP_DIR="$HOME/temp"
 # Clean up orphaned nvim processes from previous sessions
 # These accumulate when tmux sessions are killed but nvim doesn't terminate
 cleanup_orphaned_nvim() {
-  # Kill nvim processes that are not attached to a terminal (orphaned)
-  pkill -9 -f "nvim --embed" 2>/dev/null || true
+  # Kill ALL nvim processes - they'll be restarted by this bootstrap anyway
+  pkill -9 nvim 2>/dev/null || true
   # Kill orphaned copilot language servers
   pkill -9 -f "copilot-language-server" 2>/dev/null || true
+  # Small delay to ensure processes are cleaned up before creating new sessions
+  sleep 0.5
 }
 
 ensure_fresh_session() {
