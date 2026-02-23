@@ -1,16 +1,14 @@
 # Kitty Startup Session
-# Replicates wezterm gui-startup behavior
 
-# Tab 1: rails - run bootstrap then attach to tmux session
-# Bootstrap runs in first tab to ensure sessions exist before attaching
+# Tab 1: rails - run bootstrap then attach to tmux
 new_tab rails
 cd ~
-launch sh -c "$HOME/dotfiles/scripts/tmux-bootstrap.sh && /opt/homebrew/bin/tmux attach-session -t rails"
+launch /opt/homebrew/bin/fish -l -C "/Users/Tom.Thornton/dotfiles/scripts/tmux-bootstrap.sh; tmux attach-session -t rails"
 
-# Tab 2: local - attach to tmux session  
+# Tab 2: local - attach to tmux (bootstrap runs in tab 1)
 new_tab local
 cd ~
-launch /opt/homebrew/bin/tmux attach-session -t local
+launch /opt/homebrew/bin/fish -l -C "sleep 3; tmux attach-session -t local"
 
 # Tab 3: k8s - fish shell (user can manually run k8s-tmux)
 new_tab k8s
