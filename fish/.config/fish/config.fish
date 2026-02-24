@@ -38,8 +38,8 @@ alias cw="cd /Users/Tom.Thornton/src/cwordweb"
 alias p="cd /Users/Tom.Thornton/programs"
 alias vim="nvim"
 # SSH aliases - use TERM=xterm-256color because remote hosts don't have xterm-kitty terminfo
-alias k8s="TERM=xterm-256color ssh -A jump -t ssh usw1464"
-alias devbox="TERM=xterm-256color ssh -A thornton@dev274.meraki.com"
+alias k8s="TERM=xterm-256color ssh -A jump -t \"ssh -t usw1464 'tmux attach || tmux new-session'\""
+alias devbox="TERM=xterm-256color ssh -A -t thornton@dev274.meraki.com 'tmux attach || tmux new-session'"
 
 # Tmux-attached versions (used by Kitty startup)
 # Attaches to most recent session if one exists, otherwise creates new
