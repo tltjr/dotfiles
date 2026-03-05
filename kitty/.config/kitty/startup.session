@@ -1,21 +1,21 @@
 # Kitty Startup Session
 
-# Tab 1: rails - run bootstrap then attach to tmux
-new_tab rails
+# Tab 1: util - pgcli in its own tmux session
+new_tab util
 cd ~
-launch /opt/homebrew/bin/fish -l -C "/Users/Tom.Thornton/dotfiles/scripts/tmux-bootstrap.sh; tmux attach-session -t rails"
+launch /opt/homebrew/bin/fish -l -C "tmux new-session -A -s util 'pgcli -h localhost -U $(whoami) cword'"
 
-# Tab 2: local - attach to tmux (bootstrap runs in tab 1)
-new_tab local
+# Tab 2: terminal - fish shell in cwordweb in its own tmux session
+new_tab terminal
 cd ~
-launch /opt/homebrew/bin/fish -l -C "sleep 3; tmux attach-session -t local"
+launch /opt/homebrew/bin/fish -l -C "tmux new-session -A -s terminal -c ~/src/cwordweb"
 
-# Tab 3: k8s - fish shell (user can manually run k8s-tmux)
-new_tab k8s
+# Tab 3: vim - vim in cwordweb in its own tmux session
+new_tab vim
 cd ~
-launch /opt/homebrew/bin/fish -l
+launch /opt/homebrew/bin/fish -l -C "tmux new-session -A -s vim -c ~/src/cwordweb 'vim'"
 
-# Tab 4: devbox - fish shell (user can manually run devbox-tmux)
-new_tab devbox
+# Tab 4: agent - claude in cwordweb in its own tmux session
+new_tab agent
 cd ~
-launch /opt/homebrew/bin/fish -l
+launch /opt/homebrew/bin/fish -l -C "tmux new-session -A -s agent -c ~/src/cwordweb 'claude'"
