@@ -47,6 +47,9 @@ alias devbox="TERM=xterm-256color ssh -A -t thornton@dev274.meraki.com 'tmux att
 alias k8s-tmux="TERM=xterm-256color ssh -A jump -t \"ssh -t usw1464 'tmux attach || tmux new-session'\""
 alias devbox-tmux="TERM=xterm-256color ssh -A -t thornton@dev274.meraki.com 'tmux attach || tmux new-session'"
 
+alias agent="claude --dangerously-skip-permissions"
+alias agentsafe="claude"
+
 # Initialize rbenv
 if command -v rbenv >/dev/null 2>&1
     rbenv init - | source
@@ -74,6 +77,7 @@ set -g hydro_color_git FCECC9
 set -g hydro_color_pwd C6D4FF
 
 set -gx DOTNET_ROOT /opt/homebrew/opt/dotnet@8
+set -x CLAUDE_CODE_MAX_OUTPUT_TOKENS 64000
 set PATH /opt/homebrew/opt/dotnet@8/bin $PATH
 
 # Postgres.app - must be last to ensure it's first in PATH
