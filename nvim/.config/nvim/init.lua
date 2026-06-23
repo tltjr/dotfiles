@@ -190,7 +190,7 @@ vim.keymap.set('n', '<leader>q', '<Cmd>bp <BAR> bd #<CR>')
 vim.keymap.set('n', '<leader>do', '<Cmd>DiffviewOpen<CR>')
 vim.keymap.set('n', '<leader>dx', '<Cmd>DiffviewClose<CR>')
 vim.keymap.set('n', '<leader>db', '<Cmd>DiffviewOpen main...HEAD<CR>')
-vim.keymap.set('n', '<leader>dc', '<Cmd>DiffviewOpen HEAD~1<CR>')
+vim.keymap.set('n', '<leader>dc', '<Cmd>DiffviewOpen HEAD^!<CR>')
 
 local harpoon = require('harpoon')
 harpoon:setup({})
