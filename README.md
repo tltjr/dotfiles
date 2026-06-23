@@ -16,6 +16,7 @@ Personal configuration files managed with [GNU Stow](https://www.gnu.org/softwar
 | `karabiner` | Karabiner-Elements keyboard remapping |
 | `hammerspoon` | Hammerspoon automation (ShiftIt window management) |
 | `ripgrep` | Ripgrep search configuration |
+| `kitty` | Kitty terminal emulator configuration |
 
 ## Installation
 
@@ -28,7 +29,7 @@ brew install stow
 
 # Install all packages
 cd ~/dotfiles
-stow git zsh tmux wezterm vim nvim fish karabiner hammerspoon ripgrep
+stow git zsh tmux wezterm vim nvim fish karabiner hammerspoon ripgrep kitty
 
 # Or install individual packages
 stow git
@@ -80,6 +81,11 @@ dotfiles/
 │   └── .hammerspoon/
 │       ├── init.lua
 │       └── Spoons/
-└── ripgrep/
-    └── .ripgreprc
+├── ripgrep/
+│   └── .ripgreprc
+└── kitty/
+    └── .config/kitty/
+        ├── kitty.conf
+        ├── dracula.conf
+        └── startup.session
 ```

@@ -36,16 +36,23 @@ alias l="ls -alt"
 alias cwpsql="psql -U postgres -W -h 138.68.15.91 -d cword"
 alias cw="cd /Users/Tom.Thornton/src/cwordweb"
 alias p="cd /Users/Tom.Thornton/programs"
+alias icloud="cd ~/Library/Mobile\ Documents/com~apple~CloudDocs"
 alias vim="nvim"
-# SSH aliases - use TERM=xterm-256color because remote hosts don't have xterm-kitty terminfo
-alias k8s="TERM=xterm-256color ssh -A jump -t \"ssh -t usw1464 'tmux attach || tmux new-session'\""
-alias devbox="TERM=xterm-256color ssh -A -t thornton@dev274.meraki.com 'tmux attach || tmux new-session'"
+alias ssh="TERM=xterm-256color command ssh"
+alias k8s="ssh -A jump -t \"ssh -t usw1464 'tmux attach || tmux new-session'\""
+alias devbox="ssh -A -t thornton@dev274.meraki.com 'tmux attach || tmux new-session'"
 
 # Tmux-attached versions (used by Kitty startup)
-# Attaches to most recent session if one exists, otherwise creates new
-# Note: Inner quotes ensure || is interpreted on final host, not jump
-alias k8s-tmux="TERM=xterm-256color ssh -A jump -t \"ssh -t usw1464 'tmux attach || tmux new-session'\""
-alias devbox-tmux="TERM=xterm-256color ssh -A -t thornton@dev274.meraki.com 'tmux attach || tmux new-session'"
+alias k8s-tmux="ssh -A jump -t \"ssh -t usw1464 'tmux attach || tmux new-session'\""
+alias devbox-tmux="ssh -A -t thornton@dev274.meraki.com 'tmux attach || tmux new-session'"
+
+# Keep the tmux SSH_AUTH_SOCK symlink pointing at the live macOS agent socket,
+# and ensure id_rsa_federal is loaded for agent-forwarded connections to
+# gov-meraki shards.
+if test -n "$SSH_AUTH_SOCK"; and test "$SSH_AUTH_SOCK" != "$HOME/.ssh/ssh_auth_sock"
+    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+end
+ssh-add --apple-use-keychain ~/.ssh/id_rsa_federal 2>/dev/null
 
 # Initialize rbenv
 if command -v rbenv >/dev/null 2>&1

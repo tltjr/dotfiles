@@ -76,6 +76,13 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
+# Keep the tmux SSH_AUTH_SOCK symlink pointing at the live macOS agent socket.
+# Inside tmux, SSH_AUTH_SOCK is already the symlink, so this only fires
+# in a non-tmux shell where launchd sets the real path.
+if [ -n "$SSH_AUTH_SOCK" ] && [ "$SSH_AUTH_SOCK" != "$HOME/.ssh/ssh_auth_sock" ]; then
+    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+fi
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
