@@ -1,6 +1,6 @@
 [user]
   name = Tom Thornton
-  email = tom.thornton@meraki.net
+	email = tlt.jnr@gmail.com
 [alias]
   lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit -20
 	amend = commit --amend -C HEAD
