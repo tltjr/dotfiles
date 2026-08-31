@@ -16,6 +16,14 @@ Personal configuration files managed with [GNU Stow](https://www.gnu.org/softwar
 | `karabiner` | Karabiner-Elements keyboard remapping |
 | `hammerspoon` | Hammerspoon automation (ShiftIt window management) |
 | `ripgrep` | Ripgrep search configuration |
+| `kitty` | Kitty terminal emulator |
+
+## Branches
+
+- `main` — baseline config, shared across machines.
+- `mini` — overrides specific to the Mac Mini (e.g. `kitty` in place of `wezterm`, machine-local fish/nvim/tmux tweaks). Not meant to be merged back into `main`; keep machine-specific changes here instead of on `main`.
+
+If you're setting up a new machine, branch from whichever is the closer match, or start a new machine-specific branch off `main`.
 
 ## Installation
 
